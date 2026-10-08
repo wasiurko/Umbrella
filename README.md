@@ -82,13 +82,20 @@ python -m pip install -r requirements.txt
 python manage.py migrate
 ```
 
-5. Crear un usuario administrador:
+5. Ingrese un usuario administrador:
+user: adm
+password: 123
 
-```bash
-python manage.py createsuperuser
-```
+user: arq
+password: 123
 
-6. Iniciar la aplicación:
+user: sano
+password: 123
+
+user: pato
+password: 123
+
+7. Iniciar la aplicación:
 
 ```bash
 python manage.py runserver
