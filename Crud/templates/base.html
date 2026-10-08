@@ -1,0 +1,37 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Perfiles{% endblock %} | Obra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="{% url 'perfiles:inicio' %}">
+            <span class="brand-mark" aria-hidden="true">O</span>
+            <span>Obra<span class="brand-subtitle">DIRECTORIO DE PERFILES</span></span>
+        </a>
+        {% if user.is_authenticated %}
+        <div class="topbar-user">
+            <nav class="main-nav" aria-label="Navegación principal">
+                {% if es_gestor_perfiles %}<a href="{% url 'perfiles:lista' %}">Perfiles</a>{% endif %}
+                {% if es_trabajador and not es_gestor_perfiles and not es_administrador %}<a href="{% url 'perfiles:mi_perfil' %}">Mi perfil</a>{% endif %}
+            </nav>
+            {% if es_administrador %}<span class="user-name">{{ user.username }}</span>{% endif %}
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class="text-button" type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+        {% endif %}
+    </header>
+    <main class="page-shell">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

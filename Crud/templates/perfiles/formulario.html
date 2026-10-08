@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'perfiles:lista' %}">← Volver a perfiles</a>
+<section class="form-page">
+    <div class="form-heading">
+        <p class="eyebrow">DIRECTORIO / CUENTA NUEVA</p>
+        <h1>{{ titulo }}</h1>
+        <p class="heading-copy">{% if permitir_arq %}Crea un perfil de arquitecto o trabajador.{% else %}Crea una cuenta y perfil de trabajador.{% endif %}</p>
+    </div>
+    <form method="post" class="product-form">
+        {% csrf_token %}
+        {% if usuario_form.non_field_errors %}<div class="form-alert field-wide">{{ usuario_form.non_field_errors }}</div>{% endif %}
+        {% if perfil_form.non_field_errors %}<div class="form-alert field-wide">{{ perfil_form.non_field_errors }}</div>{% endif %}
+        <h2 class="field-wide form-section-title">Cuenta</h2>
+        {% for field in usuario_form %}
+            <div class="field-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}<span class="required-mark">*</span></label>
+                {{ field }}
+                {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+                {% if field.help_text %}<small>{{ field.help_text|safe }}</small>{% endif %}
+            </div>
+        {% endfor %}
+        <h2 class="field-wide form-section-title">Perfil</h2>
+        {% for field in perfil_form %}
+            <div class="field-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="required-mark">*</span>{% endif %}</label>
+                {{ field }}
+                {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+            </div>
+        {% endfor %}
+        <div class="form-actions field-wide"><a class="button button-light" href="{% url 'perfiles:lista' %}">Cancelar</a><button class="button button-primary" type="submit">Crear perfil</button></div>
+    </form>
+</section>
+{% endblock %}

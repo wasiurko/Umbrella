@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Perfiles{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">DIRECTORIO / EQUIPO</p>
+        <h1>Perfiles</h1>
+        <p class="heading-copy">Consulta arquitectos y trabajadores del proyecto.</p>
+    </div>
+    <a class="button button-primary" href="{% url 'perfiles:crear' %}"><span aria-hidden="true">+</span> Crear perfil</a>
+</section>
+<section class="toolbar" aria-label="Buscar perfiles">
+    <form class="search-form" method="get">
+        <label class="visually-hidden" for="profile-search">Buscar perfil</label>
+        <input id="profile-search" name="q" type="search" value="{{ consulta }}" placeholder="Buscar nombre, cargo o tipo">
+        <button class="button button-light" type="submit">Buscar</button>
+        {% if consulta %}<a class="clear-search" href="{% url 'perfiles:lista' %}">Limpiar</a>{% endif %}
+    </form>
+    <span class="result-count">{{ perfiles|length }} perfil{{ perfiles|length|pluralize:"es" }}</span>
+</section>
+<div class="table-wrap">
+    <table>
+        <thead><tr><th>Nombre</th><th>Tipo</th>{% if es_administrador %}<th>Usuario</th>{% endif %}<th>Cargo</th><th class="actions-heading">Acciones</th></tr></thead>
+        <tbody>
+        {% for perfil in perfiles %}
+            <tr>
+                <td><a class="product-link" href="{% url 'perfiles:detalle' perfil.pk %}">{{ perfil.usuario.get_full_name|default:"Perfil sin nombre" }}</a></td>
+                <td><span class="profile-type">{{ perfil.get_tipo_display }}</span></td>
+                {% if es_administrador %}<td>{{ perfil.usuario.username }}</td>{% endif %}
+                <td>{{ perfil.cargo }}</td>
+                <td class="row-actions">
+                    <a href="{% url 'perfiles:editar' perfil.pk %}">Editar</a>
+                    {% if es_administrador %}<a class="delete-link" href="{% url 'perfiles:eliminar' perfil.pk %}">Eliminar</a>{% endif %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td class="empty-state" colspan="{% if es_administrador %}5{% else %}4{% endif %}">{% if consulta %}No encontramos perfiles para esa búsqueda.{% else %}Todavía no hay perfiles registrados.{% endif %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

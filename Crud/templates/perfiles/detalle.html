@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Perfil de {{ perfil.usuario.get_full_name|default:"Perfil sin nombre" }}{% endblock %}
+{% block content %}
+{% if es_gestor_perfiles %}<a class="back-link" href="{% url 'perfiles:lista' %}">← Volver a perfiles</a>{% endif %}
+<section class="detail-page">
+    <div class="detail-heading">
+        <div><p class="eyebrow">{{ perfil.get_tipo_display|upper }}</p><h1>{{ perfil.usuario.get_full_name|default:"Perfil sin nombre" }}</h1></div>
+        {% if es_administrador or es_arquitecto and perfil.tipo == "trabajador" %}<a class="button button-primary" href="{% url 'perfiles:editar' perfil.pk %}">Editar perfil</a>{% endif %}
+    </div>
+    <dl class="detail-grid">
+        <div><dt>Tipo de perfil</dt><dd>{{ perfil.get_tipo_display }}</dd></div>
+        {% if es_administrador %}<div><dt>Usuario</dt><dd>{{ perfil.usuario.username }}</dd></div>{% endif %}
+        <div><dt>Cargo o especialidad</dt><dd>{{ perfil.cargo }}</dd></div>
+    </dl>
+    {% if es_administrador %}<a class="delete-link detail-delete" href="{% url 'perfiles:eliminar' perfil.pk %}">Eliminar perfil y cuenta</a>{% endif %}
+</section>
+{% endblock %}
