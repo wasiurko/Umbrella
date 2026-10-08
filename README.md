@@ -116,7 +116,7 @@ Umbrella/
 
 - Python
 - Django
-- SQLite
+- SQLite (integrado en VSCode)
 - HTML y CSS
 
 ## Observaciones
@@ -128,4 +128,4 @@ Umbrella/
 
 ## Autor
 
-wasiurko
+Jesus Guaygua
